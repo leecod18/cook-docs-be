@@ -1,0 +1,53 @@
+spring:
+  application:
+        name: cookdocs
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/cooks_db
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+    generate-ddl: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_ID}
+            client-secret: ${GOOGLE_SECRET}
+            redirect-uri: http://localhost:8080/login/oauth2/code/google
+          facebook:
+            client-id: ${FACEBOOK_ID}
+            client-secret: ${FACEBOOK_SECRET}
+            redirect-uri: http://localhost:8080/login/oauth2/code/facebook
+            scope: public_profile,email
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth?prompt=consent
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://openidconnect.googleapis.com/v1/userinfo
+          facebook:
+              authorization-uri: https://www.facebook.com/v16.0/dialog/oauth?prompt=consent
+              token-uri: https://graph.facebook.com/v16.0/oauth/access_token
+              user-info-uri: https://graph.facebook.com/me?fields=id,name,email,picture
+    show-sql: true
+minio:
+    bucket: cook-docs
+    access :
+        key: minioadmin
+        secret: minioadmin
+    url: http://localhost:9000
+logging:
+  level:
+    org:
+      springframework:
+        security : DEBUG
+
+jwt :
+    secret: ${JWT_SECRET}
+    expiration-ms: 86400000
