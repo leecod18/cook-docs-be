@@ -29,6 +29,9 @@ public class User {
     @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
     private Image image;
 
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    private List<Like> likes;
+
     @Transient
     private List<Review> reviews;
 

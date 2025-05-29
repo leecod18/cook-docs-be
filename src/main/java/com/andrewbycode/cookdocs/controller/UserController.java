@@ -85,7 +85,6 @@ public class UserController {
         response.addCookie(jwtCookie);
     }
 
-
     @PutMapping("/{userId}")
     public ResponseEntity<UserDto> updateUsername(@RequestParam String username, @PathVariable Long userId) {
         return ResponseEntity.ok(userService.updateUser(username, userId));
