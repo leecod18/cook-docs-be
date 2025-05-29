@@ -67,9 +67,24 @@ public class UserController {
 
     @PostMapping("/logout")
     public void logout(HttpServletRequest request, HttpServletResponse response) {
-        request.getSession().invalidate(); // Xóa session
-        response.setHeader("Set-Cookie", "JSESSIONID=; HttpOnly; Path=/; Max-Age=0"); // Xóa cookie
+        // Xoá session
+        request.getSession().invalidate();
+
+        // Xoá JSESSIONID (tuỳ thuộc vào bạn có dùng session hay không)
+        Cookie sessionCookie = new Cookie("JSESSIONID", null);
+        sessionCookie.setPath("/");
+        sessionCookie.setHttpOnly(true);
+        sessionCookie.setMaxAge(0); // Xoá cookie
+        response.addCookie(sessionCookie);
+
+        // Xoá JWT cookie
+        Cookie jwtCookie = new Cookie("jwt", null);
+        jwtCookie.setPath("/");
+        jwtCookie.setHttpOnly(true);
+        jwtCookie.setMaxAge(0); // Xoá cookie
+        response.addCookie(jwtCookie);
     }
+
 
     @PutMapping("/{userId}")
     public ResponseEntity<UserDto> updateUsername(@RequestParam String username, @PathVariable Long userId) {
