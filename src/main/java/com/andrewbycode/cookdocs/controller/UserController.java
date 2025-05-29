@@ -34,7 +34,6 @@ public class UserController {
         }
 
         try {
-            // Extract username and find user
             String username = jwtUtils.getUsernameFromToken(jwt);
             User user = userService.findByUsername(username);
 
@@ -44,7 +43,6 @@ public class UserController {
 
             return ResponseEntity.ok(user);
         } catch (Exception e) {
-            // Log the error (in a real application)
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing request");
         }
     }
@@ -68,6 +66,11 @@ public class UserController {
     @PostMapping("/logout")
     public void logout(HttpServletRequest request, HttpServletResponse response) {
         request.getSession().invalidate(); // Xóa session
+        Cookie jwtCookie = new Cookie("jwt", null);
+        jwtCookie.setPath("/");
+        jwtCookie.setHttpOnly(true);
+        jwtCookie.setMaxAge(0);
+        response.addCookie(jwtCookie);
         response.setHeader("Set-Cookie", "JSESSIONID=; HttpOnly; Path=/; Max-Age=0"); // Xóa cookie
     }
 

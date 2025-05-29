@@ -12,15 +12,9 @@ public class LikeController {
 
     private final LikeService likeService;
 
-    @PostMapping("/recipe/{recipeId}/like")
-    public ResponseEntity<Integer> likeRecipe(@PathVariable Long recipeId) {
-        int like = likeService.likeRecipe(recipeId);
-        return ResponseEntity.ok(like);
-    }
-
-    @PutMapping("/recipe/{recipeId}/decrement-like")
-    public ResponseEntity<Integer> updateLikeRecipe(@PathVariable Long recipeId) {
-        int like = likeService.decrementLikeCount(recipeId);
+    @PostMapping("/recipe/{recipeId}/like/{userName}")
+    public ResponseEntity<Integer> likeRecipe(@PathVariable Long recipeId, @PathVariable String userName) {
+        int like = likeService.likeRecipe(recipeId, userName);
         return ResponseEntity.ok(like);
     }
 
