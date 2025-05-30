@@ -1,5 +1,6 @@
 package com.andrewbycode.cookdocs.entitys;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,6 +25,7 @@ public class User {
     private Integer clientRegistration;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private Set<Recipe> recipes;
 
     @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)

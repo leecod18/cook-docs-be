@@ -43,4 +43,13 @@ public class LikeServiceImpl implements LikeService {
         return recipeRepository.findById(recipeId)
                 .map(recipe -> likeRepository.countByRecipeId(recipe.getId())).orElse(0L);
     }
+
+    @Override
+    public Like getLikeByRecipeIdAndUserId(Long recipeId, Long userId) {
+        Like like = likeRepository.findByRecipeIdAndUserId(recipeId, userId);
+        if (like == null) {
+            throw new EntityNotFoundException("Like not found for recipeId: " + recipeId + " and userId: " + userId);
+        }
+        return like;
+    }
 }
