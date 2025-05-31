@@ -1,5 +1,6 @@
 package com.andrewbycode.cookdocs.entitys;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,9 +23,11 @@ public class Image {
 
     @OneToOne
     @JoinColumn(name = "recipe_id")
+    @JsonIgnore
     private Recipe recipe;
 
     @OneToOne
+    @JsonIgnore
     @JoinColumn(name = "user_id")
     private User user;
 }

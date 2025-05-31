@@ -1,5 +1,6 @@
 package com.andrewbycode.cookdocs.entitys;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,10 +20,12 @@ public class Like {
     private Long id;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "recipe_id")
     private Recipe recipe;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "user_id")
     private User user;
 

@@ -20,6 +20,7 @@ public class LikeServiceImpl implements LikeService {
     @Override
     @Transactional
     public int likeRecipe(Long recipeId, String userName) {
+        System.out.println("O day");
         User user = userRepository.findByUserName(userName);
         return recipeRepository.findById(recipeId).map(recipe -> {
             if (!likeRepository.existsByRecipeIdAndUserId(recipeId, user.getId())) {
