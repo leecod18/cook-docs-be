@@ -122,8 +122,8 @@ public class RecipeServiceImpl  implements RecipeService {
                 .stream()
                 .map(review -> modelMapper.map(review,ReviewDto.class)).toList();
 
-        recipeDto.setTotalRateCount(recipeDto.getTotalRateCount());
-        recipeDto.setAverageRating(recipeDto.getAverageRating());
+        recipeDto.setTotalRateCount(recipe.getTotalRating());
+        recipeDto.setAverageRating(recipe.getAverageRating());
         recipeDto.setUser(userDto);
         recipeDto.setReviews(reviews);
 

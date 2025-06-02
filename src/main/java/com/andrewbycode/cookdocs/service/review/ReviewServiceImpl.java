@@ -25,23 +25,24 @@ public class ReviewServiceImpl implements ReviewService {
         Recipe recipe = recipeRepository.findById(recipeId)
                 .orElseThrow(() -> new EntityNotFoundException("Review not found"));
 
-      boolean isUpdated = reviewRepository.findByRecipeIdAndUserId(recipeId, user.getId())
-              .map(existingReview -> {
-                  updateReview(existingReview,reviewRequest);
-                  return true;
-              }).orElseGet(() -> {
-                  createReview(recipe,reviewRequest);
-                  return false;
-              });
-      if(isUpdated){
-          recipe.setAverageRating(recipe.calculateAverageRating());
-          recipe.setTotalRating(getTotalReviews(user.getId()));
-          recipeRepository.save(recipe);
-      }
+        boolean isUpdated = reviewRepository.findByRecipeIdAndUserId(recipeId, user.getId())
+                .map(existingReview -> {
+                    updateReview(existingReview, reviewRequest);
+                    recipe.setAverageRating(recipe.calculateAverageRating());
+                    return true;
+                }).orElseGet(() -> {
+                    createReview(recipe, reviewRequest);
+                    return false;
+                });
+        if (!isUpdated) {
+            recipe.setAverageRating(recipe.calculateAverageRating());
+            recipe.setTotalRating(getTotalReviews(recipeId));
+        }
+        recipeRepository.save(recipe);
     }
 
     private void updateReview(Review review, ReviewRequest reviewRequest) {
-        review.setStars(reviewRequest.getStarts());
+        review.setStars(reviewRequest.getStars());
         review.setFeedBack(reviewRequest.getFeedBack());
         reviewRepository.save(review);
     }
@@ -52,7 +53,7 @@ public class ReviewServiceImpl implements ReviewService {
 
         Review review = new Review();
         review.setUser(user);
-        review.setStars(reviewRequest.getStarts());
+        review.setStars(reviewRequest.getStars());
         review.setFeedBack(reviewRequest.getFeedBack());
         review.setRecipe(recipe);
         reviewRepository.save(review);
@@ -68,6 +69,10 @@ public class ReviewServiceImpl implements ReviewService {
 
         recipe.getReviews().remove(review);
         reviewRepository.delete(review);
+
+        recipe.setAverageRating(recipe.calculateAverageRating());
+        recipe.setTotalRating(getTotalReviews(recipeId));
+        recipeRepository.save(recipe);
     }
 
     @Override
