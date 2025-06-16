@@ -1,5 +1,6 @@
 package com.andrewbycode.cookdocs.service.review;
 
+import com.andrewbycode.cookdocs.dto.ReviewDto;
 import com.andrewbycode.cookdocs.entitys.Recipe;
 import com.andrewbycode.cookdocs.entitys.Review;
 import com.andrewbycode.cookdocs.entitys.User;
@@ -9,7 +10,10 @@ import com.andrewbycode.cookdocs.repository.UserRepository;
 import com.andrewbycode.cookdocs.request.ReviewRequest;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +21,7 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
     private final RecipeRepository recipeRepository;
     private final UserRepository userRepository;
+    private final ModelMapper modelMapper;
 
     @Override
     public void addReview(Long recipeId, ReviewRequest reviewRequest) {
@@ -78,5 +83,16 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public int getTotalReviews(Long recipeId) {
         return reviewRepository.countAllByRecipeId(recipeId);
+    }
+
+    @Override
+    public List<ReviewDto> findAllReviewByUserId(Long userId) {
+        List<ReviewDto> listReview =  reviewRepository.findAllByUserId(userId)
+                .stream()
+                .map(review -> modelMapper.map(review,ReviewDto.class)).toList();
+        if(listReview.isEmpty()){
+            throw new EntityNotFoundException("Review not found");
+        }
+        return listReview;
     }
 }

@@ -25,17 +25,17 @@ public class RecipeController {
 
     @GetMapping
     public ResponseEntity<List<RecipeDto>> getAllRecipes() {
-       return ResponseEntity.ok(recipeService.getConvertedRecipes(recipeService.getALLRecipes()));
+        return ResponseEntity.ok(recipeService.getConvertedRecipes(recipeService.getALLRecipes()));
     }
 
     @GetMapping("/{id}/recipe")
     public ResponseEntity<RecipeDto> getRecipeById(@PathVariable Long id) {
-        return ResponseEntity.ok(recipeService.convertToDto(recipeService.getRecipeById(id)) );
+        return ResponseEntity.ok(recipeService.convertToDto(recipeService.getRecipeById(id)));
     }
 
     @PutMapping("/{id}/update")
-    public ResponseEntity<RecipeDto> updateRecipeById(@RequestBody RecipeUpdateRequest request,@PathVariable Long id) {
-        return ResponseEntity.ok(recipeService.convertToDto(recipeService.updateRecipeById(request, id))) ;
+    public ResponseEntity<RecipeDto> updateRecipeById(@RequestBody RecipeUpdateRequest request, @PathVariable Long id) {
+        return ResponseEntity.ok(recipeService.convertToDto(recipeService.updateRecipeById(request, id)));
     }
 
     @DeleteMapping("/{id}/delete")
@@ -54,5 +54,9 @@ public class RecipeController {
         return ResponseEntity.ok(recipeService.getAllRecipeCuisines());
     }
 
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<RecipeDto>> getAllRecipesByUserId(@PathVariable Long userId) {
+        return ResponseEntity.ok(recipeService.findAllByRecipeId(userId));
+    }
 
 }

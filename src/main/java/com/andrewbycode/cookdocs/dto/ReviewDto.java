@@ -8,4 +8,5 @@ public class ReviewDto {
     private int stars;
     private String feedBack;
     private UserDto user;
+    private Long recipeId;
 }

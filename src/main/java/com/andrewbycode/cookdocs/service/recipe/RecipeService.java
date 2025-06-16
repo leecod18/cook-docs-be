@@ -2,7 +2,6 @@ package com.andrewbycode.cookdocs.service.recipe;
 
 import com.andrewbycode.cookdocs.dto.RecipeDto;
 import com.andrewbycode.cookdocs.entitys.Recipe;
-import com.andrewbycode.cookdocs.entitys.User;
 import com.andrewbycode.cookdocs.request.CreateRecipeRequest;
 import com.andrewbycode.cookdocs.request.RecipeUpdateRequest;
 
@@ -28,4 +27,5 @@ public interface RecipeService {
 
     RecipeDto convertToDto(Recipe recipe);
 
+    List<RecipeDto> findAllByRecipeId(Long recipeId);
 }

@@ -4,6 +4,7 @@ import com.andrewbycode.cookdocs.dto.ImageDto;
 import com.andrewbycode.cookdocs.entitys.Image;
 import com.andrewbycode.cookdocs.entitys.Recipe;
 import com.andrewbycode.cookdocs.enums.ImageTypeEnum;
+import com.andrewbycode.cookdocs.exception.BadRequestException;
 import com.andrewbycode.cookdocs.repository.ImageRepository;
 import com.andrewbycode.cookdocs.request.ImageRequest;
 import com.andrewbycode.cookdocs.service.recipe.RecipeService;
@@ -13,7 +14,6 @@ import com.andrewbycode.cookdocs.utils.FileUtils;
 import com.andrewbycode.cookdocs.utils.StringUtils;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.BadRequestException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -36,7 +36,7 @@ public class ImageServiceImpl implements ImageService {
     private String BUCKET_NAME;
 
     private final String[] FILE_TYPE = {"jpeg","jpg","png"};
-    private final String SIZE_IMAGE = "150KB";
+private final String SIZE_IMAGE = "1MB";
     @Override
     public Image getImageById(Long id) {
         return imageRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Image not found"));
@@ -126,7 +126,7 @@ public class ImageServiceImpl implements ImageService {
             throw new BadRequestException(String.format("The image file is in an incorrect format [%s]", Arrays.toString(FILE_TYPE)));
         }
 
-        if(!FileUtils.validImageSize(fileContent,150 * 1024)){
+        if(!FileUtils.validImageSize(fileContent,1 * 1024 * 1024)){
             throw new BadRequestException(String.format("The image file size must be smaller [%s]",SIZE_IMAGE));
         }
 

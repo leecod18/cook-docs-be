@@ -129,4 +129,15 @@ public class RecipeServiceImpl  implements RecipeService {
 
         return recipeDto;
     }
+
+    @Override
+    public List<RecipeDto> findAllByRecipeId(Long userId) {
+        List<RecipeDto> listRecipe = recipeRepository.findAllByUserId(userId)
+                .stream()
+                .map(recipeDto -> modelMapper.map(recipeDto, RecipeDto.class)).toList();
+        if(listRecipe.isEmpty()) {
+            throw new EntityNotFoundException("Recipe not found");
+        }
+        return listRecipe;
+    }
 }
